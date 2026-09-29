@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AMDockVS</title>
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            text-wrap: pretty
+        }
+
+        a {
+            color: var(--color-accent-300);
+            text-decoration: none
+        }
+
+        a:hover {
+            color: var(--color-accent-200)
+        }
+
+        a.btn {
+            text-decoration: none
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nav-link {
+                display: none;
+            }
+        }
+    </style>
+    <script src="app.js" defer></script>
+</head>
+<body>
+<div
+        style="position:relative;font-family:var(--font-body);font-size:16px;color:var(--color-text);background:radial-gradient(1200px 700px at 84% -240px, color-mix(in srgb, var(--color-accent-900) 55%, transparent), transparent 62%), var(--color-bg);min-height:100vh;overflow-x:clip">
+    <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+        <defs>
+
+            <pattern id="hx-f-site-protein" width="9" height="9" patternUnits="userSpaceOnUse">
+                <path d="M4.5 1.5v6M1.5 4.5h6" style="stroke:var(--color-neutral-200);stroke-width:1.6"></path>
+            </pattern>
+            <pattern id="hx-b-site-protein" width="9" height="9" patternUnits="userSpaceOnUse">
+                <path d="M4.5 2.5v4M2.5 4.5h4" style="stroke:var(--color-neutral-400);stroke-width:1.2"></path>
+            </pattern>
+            <mask id="hx-mf-site-protein" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="900">
+                <g style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round">
+                    <path d="M1000 700C1060 600 1170 430 1240 150M1060 740C1130 640 1230 470 1300 250M1130 760C1200 660 1290 520 1340 330M950 610C1000 520 1090 390 1150 210"
+                          style="stroke-width:40;stroke-linecap:butt"></path>
+                    <path d="M1240 150C1260 90 1200 60 1180 110C1160 160 1220 180 1190 230M1150 210C1120 160 1060 170 1070 220C1080 270 1030 300 1030 330M1370 520C1430 500 1450 560 1410 590C1380 620 1420 650 1460 640M1280 680C1300 740 1250 780 1210 760C1180 740 1150 790 1130 760M1000 700C960 740 900 720 910 680C920 640 880 620 950 610M1030 330C980 300 960 360 1000 420M1300 250C1350 230 1390 270 1360 300C1340 320 1380 350 1340 330M1060 740C1040 790 1090 810 1120 790"
+                          style="stroke-width:10"></path>
+                </g>
+            </mask>
+            <mask id="hx-mb-site-protein" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="900">
+                <g style="fill:none;stroke-linecap:butt">
+                    <path d="M1030 330C1120 420 1230 520 1330 610M1000 420C1090 500 1190 590 1280 680M1080 260C1170 340 1270 430 1370 520"
+                          style="stroke:#fff;stroke-width:34"></path>
+                    <path d="M1000 700C1060 600 1170 430 1240 150M1060 740C1130 640 1230 470 1300 250M1130 760C1200 660 1290 520 1340 330M950 610C1000 520 1090 390 1150 210"
+                          style="stroke:#000;stroke-width:52"></path>
+                </g>
+            </mask>
+
+            <pattern id="mh-c-site-molecule" width="7" height="7" patternUnits="userSpaceOnUse">
+                <path d="M3.5 1v5M1 3.5h5" style="stroke:var(--color-neutral-200);stroke-width:1.4"></path>
+            </pattern>
+            <pattern id="mh-n-site-molecule" width="6" height="6" patternUnits="userSpaceOnUse">
+                <path d="M3 .8v4.4M.8 3h4.4" style="stroke:var(--color-accent-400);stroke-width:1.5"></path>
+            </pattern>
+            <pattern id="mh-o-site-molecule" width="6" height="6" patternUnits="userSpaceOnUse">
+                <circle cx="3" cy="3" r="1.4" style="fill:var(--color-accent-300)"></circle>
+            </pattern>
+            <mask id="mh-mc-site-molecule" maskUnits="userSpaceOnUse" x="-40" y="-60" width="600" height="580">
+                <g style="fill:none;stroke:#fff;stroke-linecap:round">
+                    <path d="M133.4 180L133.4 280M133.4 280L220 330M220 330L306.6 280M306.6 180L220 130M220 130L133.4 180M306.6 180L401.7 149.1M401.7 149.1L460.5 230M401.7 310.9L306.6 280M133.4 180L46.8 130M220 330L220 430M401.7 149.1L432.6 54"
+                          style="stroke-width:20"></path>
+                    <path d="M209 130L209 30M231 130L231 30M138.9 289.5L52.3 339.5M127.9 270.5L41.3 320.5M295.6 180L295.6 280M317.6 180L317.6 280M469.4 236.5L410.6 317.4M451.6 223.5L392.8 304.4"
+                          style="stroke-width:11"></path>
+                </g>
+                <g style="fill:#fff">
+                    <circle cx="220" cy="130" r="26"></circle>
+                    <circle cx="306.6" cy="180" r="26"></circle>
+                    <circle cx="306.6" cy="280" r="26"></circle>
+                    <circle cx="133.4" cy="280" r="26"></circle>
+                    <circle cx="460.5" cy="230" r="26"></circle>
+                    <circle cx="46.8" cy="130" r="23"></circle>
+                    <circle cx="220" cy="430" r="23"></circle>
+                    <circle cx="432.6" cy="54" r="23"></circle>
+                </g>
+                <g style="fill:#000">
+                    <circle cx="133.4" cy="180" r="32"></circle>
+                    <circle cx="220" cy="330" r="32"></circle>
+                    <circle cx="401.7" cy="149.1" r="32"></circle>
+                    <circle cx="401.7" cy="310.9" r="32"></circle>
+                    <circle cx="220" cy="30" r="34"></circle>
+                    <circle cx="46.8" cy="330" r="34"></circle>
+                </g>
+            </mask>
+            <mask id="mh-mn-site-molecule" maskUnits="userSpaceOnUse" x="-40" y="-60" width="600" height="580">
+                <g style="fill:#fff">
+                    <circle cx="133.4" cy="180" r="32"></circle>
+                    <circle cx="220" cy="330" r="32"></circle>
+                    <circle cx="401.7" cy="149.1" r="32"></circle>
+                    <circle cx="401.7" cy="310.9" r="32"></circle>
+                </g>
+            </mask>
+            <mask id="mh-mo-site-molecule" maskUnits="userSpaceOnUse" x="-40" y="-60" width="600" height="580">
+                <g style="fill:#fff">
+                    <circle cx="220" cy="30" r="34"></circle>
+                    <circle cx="46.8" cy="330" r="34"></circle>
+                </g>
+            </mask>
+            <g id="protein-halftone">
+                <rect width="1600" height="900" fill="url(#hx-b-site-protein)" mask="url(#hx-mb-site-protein)"></rect>
+                <rect width="1600" height="900" fill="url(#hx-f-site-protein)" mask="url(#hx-mf-site-protein)"></rect>
+                <path d="M1150 200L1162 240L1152 280L1166 320L1156 360L1172 395L1150 412M1172 395L1192 414"
+                      style="fill:none;stroke:var(--color-accent);stroke-width:6;stroke-linecap:round;stroke-linejoin:round"></path>
+                <circle cx="1150" cy="200" r="6" style="fill:var(--color-accent-300)"></circle>
+                <path d="M975 180h10M980 175v10M1035 250h10M1040 245v10M1065 240h10M1070 235v10M1005 300h10M1010 295v10M935 380h10M940 375v10M1325 190h10M1330 185v10M1435 260h10M1440 255v10M1495 300h10M1500 295v10M1365 290h10M1370 285v10M1395 430h10M1400 425v10M1435 455h10M1440 450v10M1485 570h10M1490 565v10M1495 630h10M1500 625v10M1455 660h10M1460 655v10M985 640h10M990 635v10M975 670h10M980 665v10M1115 720h10M1120 715v10M1225 790h10M1230 785v10M1345 780h10M1350 775v10M1255 640h10M1260 635v10M1295 560h10M1300 555v10M1085 480h10M1090 475v10M1195 160h10M1200 155v10"
+                      style="fill:none;stroke:var(--color-accent-400);stroke-width:2"></path>
+            </g>
+            <g id="molecule-halftone">
+                <rect x="-40" y="-60" width="600" height="580" fill="url(#mh-c-site-molecule)"
+                      mask="url(#mh-mc-site-molecule)"></rect>
+                <rect x="-40" y="-60" width="600" height="580" fill="url(#mh-n-site-molecule)"
+                      mask="url(#mh-mn-site-molecule)"></rect>
+                <rect x="-40" y="-60" width="600" height="580" fill="url(#mh-o-site-molecule)"
+                      mask="url(#mh-mo-site-molecule)"></rect>
+                <g style="fill:none;stroke:var(--color-neutral-400);stroke-width:1.2">
+                    <circle cx="133.4" cy="180" r="38"></circle>
+                    <circle cx="220" cy="330" r="38"></circle>
+                    <circle cx="401.7" cy="149.1" r="38"></circle>
+                    <circle cx="401.7" cy="310.9" r="38"></circle>
+                    <circle cx="220" cy="30" r="40" style="stroke-dasharray:2 5"></circle>
+                    <circle cx="46.8" cy="330" r="40" style="stroke-dasharray:2 5"></circle>
+                </g>
+            </g>
+        </defs>
+    </svg>
+
+
+    <nav class="nav"
+         style="position:sticky;top:0;z-index:30;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);flex-wrap:wrap;row-gap:8px;background:color-mix(in srgb, var(--color-bg) 90%, transparent);backdrop-filter:blur(10px)">
+        <span class="nav-brand"><img src="logo.svg" alt="" width="28" height="28">AMDockVS</span>
+        <a href="#platform" class="nav-link" style="white-space:nowrap">Platform</a>
+        <a href="#tools" class="nav-link" style="white-space:nowrap">Tools</a>
+        <a href="#docs" class="nav-link" style="white-space:nowrap">Docs</a>
+        <a href="#cite" class="nav-link" style="white-space:nowrap">Cite</a>
+        <button type="button" class="btn btn-ghost" id="motion-toggle" aria-pressed="false" title="Pause animations"
+
+                style="white-space:nowrap;display:inline-flex;align-items:center;gap:6px">
+            <svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+                <path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"></path>
+            </svg>
+            <span>Pause motion</span>
+        </button>
+        <a class="btn btn-primary" href="https://amdockvs.github.io/AMDockVS/" target="_blank" rel="noreferrer">Documentation</a>
+    </nav>
+
+    <section style="position:relative">
+        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
+            <div style="position:absolute;inset:0;mask-image:linear-gradient(to bottom,transparent 0%,#000 14%,#000 84%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 14%,#000 84%,transparent 100%)">
+                <div style="position:absolute;top:50%;left:50%;width:min(1125px,77.5vw);transform:translate(-50%,-50%) rotate(-45deg);aspect-ratio:660/780;opacity:0.1">
+                    <svg viewBox="870 50 660 780" preserveAspectRatio="xMidYMid meet"
+                         style="display:block;width:100%;height:100%;overflow:visible">
+                        <use href="#protein-halftone"></use>
+                    </svg>
+                </div>
+            </div>
+            <div style="height:100%;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+                <div style="position:relative;height:100%">
+                    <div aria-hidden="true"
+                         style="position:absolute;inset:0;mask-image:radial-gradient(ellipse 46% 42% at 28% 50%, transparent 0%, transparent 34%, rgba(0,0,0,0.45) 72%, #000 100%);-webkit-mask-image:radial-gradient(ellipse 46% 42% at 28% 50%, transparent 0%, transparent 34%, rgba(0,0,0,0.45) 72%, #000 100%)">
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;right:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:50%;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                    </div>
+                    <div aria-hidden="true"
+                         style="position:absolute;top:0;bottom:0;right:100%;width:50vw;overflow:hidden;mask-image:linear-gradient(to left,#000 0%,#000 28%,transparent 100%)">
+                        <canvas data-canvas="mx1" data-kind="matrix"
+                                style="position:absolute;inset:0;display:block;width:100%;height:100%;opacity:.26;image-rendering:pixelated;mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%)"></canvas>
+                    </div>
+                    <div aria-hidden="true"
+                         style="position:absolute;top:0;bottom:0;left:100%;width:50vw;overflow:hidden;mask-image:linear-gradient(to right,#000 0%,#000 28%,transparent 100%)">
+                        <canvas data-canvas="mx2" data-kind="matrix"
+                                style="position:absolute;inset:0;display:block;width:100%;height:100%;opacity:.26;image-rendering:pixelated;mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%)"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span aria-hidden="true"
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
+        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:clamp(32px,4vw,64px);align-items:center;padding:88px 0 72px">
+                <div>
+                    <h1 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(40px,5vw,72px);line-height:1.06;letter-spacing:-0.018em;margin:0">
+                        <span style="display:block">Screen a library.</span>
+                        <span style="display:block;color:var(--color-neutral-400)">Or screen them all.</span>
+                    </h1>
+                    <p style="font-size:17px;line-height:1.65;max-width:52ch;margin:26px 0 0">AMDockVS is a
+                        distributed platform for structure-based drug discovery. Protein–ligand virtual screening
+                        today, with a docking layer built to take other campaign types as they land. Two flows share
+                        one project model: <strong style="font-weight:500;color:var(--color-accent-200)">VS</strong>
+                        for libraries in the hundreds of thousands on a single workstation, <strong
+                                style="font-weight:500;color:var(--color-accent-200)">HTPVS</strong> for millions,
+                        sharded across a local network or an HPC queue.</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:28px">
+                        <a class="btn btn-primary" href="https://amdockvs.github.io/AMDockVS/" target="_blank"
+                           rel="noreferrer">Read the docs</a>
+                        <a class="btn btn-ghost" href="https://github.com/AMDockVS/AMDockVS" target="_blank"
+                           rel="noreferrer">Source on GitHub</a>
+                    </div>
+                    <p style="font-size:13px;line-height:1.4;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-neutral-500);margin:32px 0 0">
+                        Beta · Python 3.12+ · MIT · built on MolSuite</p>
+                </div>
+                <div>
+                    <div style="position:relative;border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-neutral-800);background:color-mix(in srgb, var(--color-surface) 55%, transparent);overflow:hidden">
+                        <div style="aspect-ratio:16/11;width:100%">
+                            <canvas data-canvas="hero" data-kind="hero"
+                                    style="display:block;width:100%;height:100%"></canvas>
+                        </div>
+                    </div>
+                    <p style="font-size:14px;line-height:1.5;color:var(--color-neutral-400);margin:var(--space-4) 0 0">
+                        Millions in, thousands out: every stage runs as shards across every worker you have, and
+                        only hits come back.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="position:relative">
+        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
+            <div style="height:100%;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+                <div style="position:relative;height:100%">
+                    <div style="position:absolute;top:0;bottom:0;right:0;width:min(300px,26%);overflow:hidden;mask-image:linear-gradient(to left,#000 0%,#000 40%,transparent 100%)">
+                        <canvas data-canvas="mx3" data-kind="matrix"
+                                style="position:absolute;inset:0;display:block;width:100%;height:100%;opacity:.26;image-rendering:pixelated;mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%)"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span aria-hidden="true"
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
+        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+                <div style="background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:1px 100%;background-position:0 0;padding:34px 28px 36px">
+                    <p style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:30px;font-feature-settings:'tnum' 1">
+                        10⁵+</p>
+                    <p style="font-size:12.5px;line-height:1.4;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-neutral-400);margin:10px 0 0">
+                        Ligands per VS project, one workstation</p>
+                </div>
+                <div style="background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:1px 100%;background-position:0 0;padding:34px 28px 36px">
+                    <p style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:30px;font-feature-settings:'tnum' 1">
+                        10⁶+</p>
+                    <p style="font-size:12.5px;line-height:1.4;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-neutral-400);margin:10px 0 0">
+                        Ligands per HTPVS campaign, distributed</p>
+                </div>
+                <div style="background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:1px 100%;background-position:0 0;padding:34px 28px 36px">
+                    <p style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:30px;font-feature-settings:'tnum' 1">
+                        0</p>
+                    <p style="font-size:12.5px;line-height:1.4;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-neutral-400);margin:10px 0 0">
+                        Brokers, daemons or servers to keep alive</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="platform" style="position:relative">
+        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
+            <div style="position:absolute;top:50%;left:25%;width:min(825px,75vw);transform:translate(-50%,-50%) rotate(28deg);aspect-ratio:660/780;opacity:.08">
+                <svg viewBox="870 50 660 780" preserveAspectRatio="xMidYMid meet"
+                     style="display:block;width:100%;height:100%;overflow:visible">
+                    <use href="#protein-halftone"></use>
+                </svg>
+            </div>
+            <div style="height:100%;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+                <div style="position:relative;height:100%">
+                    <div aria-hidden="true"
+                         style="position:absolute;inset:0;mask-image:radial-gradient(ellipse 34% 26% at 50% 16%, transparent 0%, transparent 34%, rgba(0,0,0,0.45) 76%, #000 100%);-webkit-mask-image:radial-gradient(ellipse 34% 26% at 50% 16%, transparent 0%, transparent 34%, rgba(0,0,0,0.45) 76%, #000 100%)">
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;right:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span aria-hidden="true"
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
+        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);padding-block:80px 84px">
+            <div style="text-align:center;max-width:60ch;margin:0 auto clamp(40px,4vw,56px)">
+                <p style="font-size:12.5px;line-height:1.4;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-300);margin:0">
+                    Platform</p>
+                <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(26px,2.6vw,38px);line-height:1.2;letter-spacing:-0.014em;margin:14px 0 0">
+                    Two flows, one project model</h2>
+                <p style="font-size:15.5px;line-height:1.65;color:color-mix(in srgb, var(--color-text) 72%, transparent);margin:16px auto 0;max-width:52ch">
+                    Both share the same docking layer, the same engines and the same results table — what changes is
+                    whether the library lives in the project or streams past it.</p>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+                <div style="position:relative;border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-neutral-800);background:color-mix(in srgb, var(--color-surface) 55%, transparent);padding:var(--space-8)">
+                    <p class="card-kicker" style="margin:0 0 10px">VS</p>
+                    <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:22px">
+                        The library is the project</h2>
+                    <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0;font-size:15.5px;line-height:1.7">
+                        Ligands are rows in the project database: browsable, filterable, one click from a pose.
+                        Standardise, compute descriptors, cluster for diversity, dock a scope and read the results
+                        in the same table you imported into. The right shape for a few hundred thousand molecules on
+                        the machine under your desk.</p>
+                    <p class="card-meta" style="margin:18px 0 0;color:var(--color-neutral-300)">Rows · full
+                        inventory · interactive</p>
+                </div>
+                <div style="position:relative;border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-neutral-800);background:color-mix(in srgb, var(--color-surface) 55%, transparent);padding:var(--space-8)">
+                    <p class="card-kicker" style="margin:0 0 10px">HTPVS</p>
+                    <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:22px">
+                        The library never enters the project</h2>
+                    <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0;font-size:15.5px;line-height:1.7">
+                        The import splits the library into uniform shards and materialises nothing. One shard is one
+                        unit of work, so a campaign fans out over cores, a lab network or an HPC allocation, and
+                        only promoted hits ever become rows — which is what keeps a ten-million-molecule run from
+                        filling the database it was meant to stay out of.</p>
+                    <p class="card-meta" style="margin:18px 0 0;color:var(--color-neutral-300)">Shards · hit gate ·
+                        resumable</p>
+                </div>
+            </div>
+            <p style="font-size:15.5px;line-height:1.7;color:var(--color-neutral-400);max-width:62ch;margin:clamp(36px,4vw,52px) auto 0;text-align:center;text-wrap:pretty">
+                The mode is read off the data, never declared: a project holds shards or it holds rows, and the
+                interface follows. Docking engines, pocket detection, preparation and analysis are one layer below
+                both — which is where other campaign types will plug in.</p>
+        </div>
+    </section>
+
+    <section style="position:relative">
+        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
+            <div style="height:100%;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+                <div style="position:relative;height:100%">
+                    <div aria-hidden="true"
+                         style="position:absolute;inset:0;mask-image:radial-gradient(ellipse 38% 44% at 50% 50%, transparent 0%, transparent 36%, rgba(0,0,0,0.4) 74%, #000 100%);-webkit-mask-image:radial-gradient(ellipse 38% 44% at 50% 50%, transparent 0%, transparent 36%, rgba(0,0,0,0.4) 74%, #000 100%)">
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;right:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:25%;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:75%;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                    </div>
+                    <div aria-hidden="true"
+                         style="position:absolute;top:0;bottom:0;left:0;width:calc(25% - 1px);overflow:hidden;mask-image:linear-gradient(to left,#000 0%,#000 28%,transparent 100%)">
+                        <canvas data-canvas="mx4" data-kind="matrix"
+                                style="position:absolute;inset:0;display:block;width:100%;height:100%;opacity:.26;image-rendering:pixelated;mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%)"></canvas>
+                    </div>
+                    <div aria-hidden="true"
+                         style="position:absolute;top:0;bottom:0;right:0;width:calc(25% - 1px);overflow:hidden;mask-image:linear-gradient(to right,#000 0%,#000 28%,transparent 100%)">
+                        <canvas data-canvas="mx5" data-kind="matrix"
+                                style="position:absolute;inset:0;display:block;width:100%;height:100%;opacity:.26;image-rendering:pixelated;mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%)"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span aria-hidden="true"
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
+        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);padding-block:112px;display:flex;justify-content:center">
+            <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(28px,3vw,42px);line-height:1.22;letter-spacing:-0.014em;margin:0;text-align:center;max-width:34ch">
+                <span style="display:block">One project, the whole campaign.</span>
+                <span style="display:block;color:var(--color-neutral-400)">No exports between steps, no second project to keep in sync.</span>
+            </h2>
+        </div>
+    </section>
+
+    <section id="tools" style="position:relative;padding-top:clamp(64px,6vw,88px)">
+        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
+            <div style="position:absolute;top:34%;left:80%;width:min(900px,90vw);transform:translate(-50%,-50%) rotate(-24deg);aspect-ratio:510/500;opacity:.06">
+                <svg viewBox="0 -20 510 500" preserveAspectRatio="xMidYMid meet"
+                     style="display:block;width:100%;height:100%;overflow:visible">
+                    <use href="#molecule-halftone"></use>
+                </svg>
+            </div>
+            <div style="position:absolute;top:75%;left:20%;width:min(900px,90vw);transform:translate(-50%,-50%) rotate(35deg);aspect-ratio:510/500;opacity:.06">
+                <svg viewBox="870 50 660 780" preserveAspectRatio="xMidYMid meet"
+                     style="display:block;width:100%;height:100%;overflow:visible">
+                    <use href="#protein-halftone"></use>
+                </svg>
+            </div>
+
+        </div>
+        <span aria-hidden="true"
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
+        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+            <div style="text-align:center;max-width:60ch;margin:0 auto clamp(40px,4vw,56px)">
+                <p style="font-size:12.5px;line-height:1.4;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-300);margin:0">
+                    Tools</p>
+                <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(26px,2.6vw,38px);line-height:1.2;letter-spacing:-0.014em;margin:14px 0 0">
+                    The toolchain, in one place</h2>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+                <article
+                        style="position:relative;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px),repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat,no-repeat;background-size:1px 100%,100% 1px;background-position:0 0,0 100%;padding:0 0 var(--space-8)">
+                    <div style="aspect-ratio:16/9;width:100%;background-image:repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:100% 1px;background-position:0 100%">
+                        <canvas data-canvas="cluster" data-kind="cluster"
+                                style="display:block;width:100%;height:100%"></canvas>
+                    </div>
+                    <div style="padding:var(--space-6) var(--space-6) 0 var(--space-6)">
+                        <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:18px">
+                            Diversity clustering</h3>
+                        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0">
+                            Fingerprints, BitBIRCH clustering and representative picking — cut the library before
+                            you spend a docking run on it.</p>
+                    </div>
+                </article>
+                <article
+                        style="position:relative;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px),repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat,no-repeat;background-size:1px 100%,100% 1px;background-position:0 0,0 100%;padding:0 0 var(--space-8)">
+                    <div style="aspect-ratio:16/9;width:100%;background-image:repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:100% 1px;background-position:0 100%">
+                        <canvas data-canvas="qsar" data-kind="qsar"
+                                style="display:block;width:100%;height:100%"></canvas>
+                    </div>
+                    <div style="padding:var(--space-6) var(--space-6) 0 var(--space-6)">
+                        <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:18px">
+                            QSAR</h3>
+                        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0">
+                            Descriptors, activities, datasets and models. Train on what you have, score what you
+                            don’t, keep both in the project.</p>
+                    </div>
+                </article>
+                <article
+                        style="position:relative;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px),repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat,no-repeat;background-size:1px 100%,100% 1px;background-position:0 0,0 100%;padding:0 0 var(--space-8)">
+                    <div style="aspect-ratio:16/9;width:100%;background-image:repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:100% 1px;background-position:0 100%">
+                        <canvas data-canvas="prep" data-kind="prep"
+                                style="display:block;width:100%;height:100%"></canvas>
+                    </div>
+                    <div style="padding:var(--space-6) var(--space-6) 0 var(--space-6)">
+                        <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:18px">
+                            Ligand preparation</h3>
+                        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0">
+                            SMILES to 3D conformers, MMFF minimization, protonation states, tautomers and torsion
+                            trees, applied across the whole scope.</p>
+                    </div>
+                </article>
+                <article
+                        style="position:relative;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px),repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat,no-repeat;background-size:1px 100%,100% 1px;background-position:0 0,0 100%;padding:0 0 var(--space-8)">
+                    <div style="aspect-ratio:16/9;width:100%;background-image:repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:100% 1px;background-position:0 100%">
+                        <canvas data-canvas="recep" data-kind="recep"
+                                style="display:block;width:100%;height:100%"></canvas>
+                    </div>
+                    <div style="padding:var(--space-6) var(--space-6) 0 var(--space-6)">
+                        <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:18px">
+                            Receptor preparation</h3>
+                        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0">
+                            From sequence to structure: homology or AlphaFold models, protonation at your pH, waters
+                            removed and charges assigned.</p>
+                    </div>
+                </article>
+                <article
+                        style="position:relative;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px),repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat,no-repeat;background-size:1px 100%,100% 1px;background-position:0 0,0 100%;padding:0 0 var(--space-8)">
+                    <div style="aspect-ratio:16/9;width:100%;background-image:repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:100% 1px;background-position:0 100%">
+                        <canvas data-canvas="site" data-kind="site"
+                                style="display:block;width:100%;height:100%"></canvas>
+                    </div>
+                    <div style="padding:var(--space-6) var(--space-6) 0 var(--space-6)">
+                        <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:18px">
+                            Binding site definition</h3>
+                        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0">
+                            P2Rank cavity prediction, residue selection, a co-crystal ligand, or a grid box you set
+                            by hand.</p>
+                    </div>
+                </article>
+                <article
+                        style="position:relative;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px),repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat,no-repeat;background-size:1px 100%,100% 1px;background-position:0 0,0 100%;padding:0 0 var(--space-8)">
+                    <div style="aspect-ratio:16/9;width:100%;background-image:repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:100% 1px;background-position:0 100%">
+                        <canvas data-canvas="engines" data-kind="engines"
+                                style="display:block;width:100%;height:100%"></canvas>
+                    </div>
+                    <div style="padding:var(--space-6) var(--space-6) 0 var(--space-6)">
+                        <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:18px">
+                            Docking engines</h3>
+                        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0">
+                            Vina 1.2.7, QuickVina2, GNINA — classical scoring and AI-based rescoring behind one
+                            interface.</p>
+                    </div>
+                </article>
+                <article
+                        style="position:relative;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px),repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat,no-repeat;background-size:1px 100%,100% 1px;background-position:0 0,0 100%;padding:0 0 var(--space-8)">
+                    <div style="aspect-ratio:16/9;width:100%;background-image:repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:100% 1px;background-position:0 100%">
+                        <canvas data-canvas="dock" data-kind="dock"
+                                style="display:block;width:100%;height:100%"></canvas>
+                    </div>
+                    <div style="padding:var(--space-6) var(--space-6) 0 var(--space-6)">
+                        <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:18px">
+                            Docking</h3>
+                        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0">
+                            Docking, re-docking and off-target docking against a second receptor — same inventory,
+                            same results table.</p>
+                    </div>
+                </article>
+                <article
+                        style="position:relative;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px),repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat,no-repeat;background-size:1px 100%,100% 1px;background-position:0 0,0 100%;padding:0 0 var(--space-8)">
+                    <div style="aspect-ratio:16/9;width:100%;background-image:repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:100% 1px;background-position:0 100%">
+                        <canvas data-canvas="vs" data-kind="vs" style="display:block;width:100%;height:100%"></canvas>
+                    </div>
+                    <div style="padding:var(--space-6) var(--space-6) 0 var(--space-6)">
+                        <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:18px">
+                            Virtual screening</h3>
+                        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0">
+                            Scope a set, dock it, rank it, open the pose — all in the table you imported into.</p>
+                    </div>
+                </article>
+                <article
+                        style="position:relative;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px),repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat,no-repeat;background-size:1px 100%,100% 1px;background-position:0 0,0 100%;padding:0 0 var(--space-8)">
+                    <div style="aspect-ratio:16/9;width:100%;background-image:repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:100% 1px;background-position:0 100%">
+                        <canvas data-canvas="htp" data-kind="htp" style="display:block;width:100%;height:100%"></canvas>
+                    </div>
+                    <div style="padding:var(--space-6) var(--space-6) 0 var(--space-6)">
+                        <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:18px">
+                            HTPVS campaigns</h3>
+                        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0">
+                            Shards as work units, dispatched over cores, a lab network or an HPC queue. Crashes
+                            resume; only hits are promoted.</p>
+                    </div>
+                </article>
+                <article
+                        style="position:relative;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px),repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat,no-repeat;background-size:1px 100%,100% 1px;background-position:0 0,0 100%;padding:0 0 var(--space-8)">
+                    <div style="aspect-ratio:16/9;width:100%;background-image:repeating-linear-gradient(to right, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:100% 1px;background-position:0 100%">
+                        <canvas data-canvas="inter" data-kind="inter"
+                                style="display:block;width:100%;height:100%"></canvas>
+                    </div>
+                    <div style="padding:var(--space-6) var(--space-6) 0 var(--space-6)">
+                        <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:18px">
+                            Interactions</h3>
+                        <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0">
+                            Contact maps and 2D interaction diagrams for the poses that survive — figure-ready, from
+                            the app or the CLI.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="docs" style="position:relative">
+        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
+            <div style="position:absolute;top:50%;left:78%;width:min(750px,75vw);transform:translate(-50%,-50%) rotate(-48deg);aspect-ratio:660/780;opacity:.14">
+                <svg viewBox="870 50 660 780" preserveAspectRatio="xMidYMid meet"
+                     style="display:block;width:100%;height:100%;overflow:visible">
+                    <use href="#protein-halftone"></use>
+                </svg>
+            </div>
+            <div style="height:100%;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+                <div style="position:relative;height:100%">
+                    <div aria-hidden="true"
+                         style="position:absolute;inset:0;mask-image:radial-gradient(ellipse 34% 26% at 50% 16%, transparent 0%, transparent 34%, rgba(0,0,0,0.45) 76%, #000 100%);-webkit-mask-image:radial-gradient(ellipse 34% 26% at 50% 16%, transparent 0%, transparent 34%, rgba(0,0,0,0.45) 76%, #000 100%)">
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;right:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span aria-hidden="true"
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
+        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);padding-block:80px">
+            <div style="text-align:center;max-width:60ch;margin:0 auto clamp(40px,4vw,56px)">
+                <p style="font-size:12.5px;line-height:1.4;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-300);margin:0">
+                    Documentation</p>
+                <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(26px,2.6vw,38px);line-height:1.2;letter-spacing:-0.014em;margin:14px 0 0">
+                    Documentation and foundations</h2>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+                <div style="position:relative;border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-neutral-800);background:color-mix(in srgb, var(--color-surface) 55%, transparent);padding:var(--space-8);display:flex;flex-direction:column;gap:var(--space-6)">
+                    <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:24px;letter-spacing:-0.01em">
+                        AMDockVS</h3>
+                    <p style="font-size:15.5px;line-height:1.7;color:color-mix(in srgb, var(--color-text) 80%, transparent);margin:0">
+                        The application: install, project modes, engines and grids, pocket detection, QSAR, and how
+                        a screening campaign is set up and resumed.</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:auto">
+                        <a class="btn btn-primary" href="https://amdockvs.github.io/AMDockVS/" target="_blank"
+                           rel="noreferrer">Read the docs</a>
+                        <a class="btn btn-ghost" href="https://github.com/AMDockVS/AMDockVS" target="_blank"
+                           rel="noreferrer">Repo</a>
+                    </div>
+                </div>
+                <div style="position:relative;border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-neutral-800);background:color-mix(in srgb, var(--color-surface) 55%, transparent);padding:var(--space-8);display:flex;flex-direction:column;gap:var(--space-6)">
+                    <h3 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:24px;letter-spacing:-0.01em">
+                        MolSuite</h3>
+                    <p style="font-size:15.5px;line-height:1.7;color:color-mix(in srgb, var(--color-text) 80%, transparent);margin:0">
+                        The stack underneath: in-process orchestration, shared Qt components, and contact maps.
+                        Explore the source repositories in the MolSuite organization.</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:auto">
+                        <a class="btn btn-primary" href="https://github.com/MolSuite" target="_blank"
+                           rel="noreferrer">Explore MolSuite</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cite" style="position:relative">
+        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
+            <div style="position:absolute;top:50%;left:12%;width:min(760px,80vw);transform:translate(-50%,-50%) rotate(32deg);aspect-ratio:510/500;opacity:.14">
+                <svg viewBox="0 -20 510 500" preserveAspectRatio="xMidYMid meet"
+                     style="display:block;width:100%;height:100%;overflow:visible">
+                    <use href="#molecule-halftone"></use>
+                </svg>
+            </div>
+            <div style="height:100%;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+                <div style="position:relative;height:100%">
+                    <div aria-hidden="true"
+                         style="position:absolute;top:0;bottom:0;left:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                    <div aria-hidden="true"
+                         style="position:absolute;top:0;bottom:0;right:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                    <div aria-hidden="true"
+                         style="position:absolute;top:0;bottom:0;left:50%;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                </div>
+            </div>
+        </div>
+        <span aria-hidden="true"
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
+        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);padding-block:80px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(28px,4vw,56px);align-items:start">
+                <div>
+                    <p style="font-size:12.5px;line-height:1.4;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-300);margin:0 0 14px">
+                        Publications &amp; citation</p>
+                    <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:clamp(26px,2.4vw,34px);letter-spacing:-0.012em">
+                        If it ends up in a paper, cite it</h2>
+                    <p style="font-size:15.5px;line-height:1.7;color:color-mix(in srgb, var(--color-text) 80%, transparent);max-width:52ch;margin:20px 0 0">
+                        The platform paper is in preparation. Until it lands, cite the software release and the
+                        predecessor tool your protocol builds on.</p>
+                    <p style="font-size:14px;line-height:1.6;color:var(--color-neutral-500);max-width:52ch;margin:18px 0 0">
+                        Placeholder — send me the DOI, journal and release version and I’ll set the real
+                        entries.</p>
+                </div>
+                <div style="position:relative;border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-neutral-800);background:color-mix(in srgb, var(--color-surface) 55%, transparent);padding:var(--space-8)">
+                    <p style="font-size:12px;line-height:1.4;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-accent-300);margin:0 0 14px">
+                        BibTeX — placeholder</p>
+                    <pre style="margin:0;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.75;color:color-mix(in srgb, var(--color-text) 86%, transparent)">@software{amdockvs,
+  title   = {AMDock-VS: a distributed platform
+             for virtual screening},
+  author  = {Valdés-Tresanco, Mario S. and
+             Valdés-Tresanco, Mario E. and
+             Moreno, Ernesto and
+             Valiente, Pedro A.},
+  year    = {——},
+  version = {——},
+  doi     = {——},
+  url     = {https://github.com/AMDockVS/AMDockVS}
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="position:relative">
+            <span aria-hidden="true"
+                  style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
+        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);padding-block:72px 0">
+            <div style="text-align:center;max-width:60ch;margin:0 auto clamp(40px,4vw,56px)">
+                <p style="font-size:12.5px;line-height:1.4;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-300);margin:0">
+                    Team</p>
+                <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(26px,2.6vw,38px);line-height:1.2;letter-spacing:-0.014em;margin:14px 0 0">
+                    Who builds it</h2>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+                <div style="background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:1px 100%;background-position:0 0;padding:26px 24px 30px">
+                    <p style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:17px">
+                        Mario S. Valdés-Tresanco</p>
+                    <p style="font-size:13px;line-height:1.4;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-neutral-500);margin:8px 0 0">
+                        Author · maintainer</p>
+                    <p style="font-size:14px;line-height:1.5;color:var(--color-neutral-400);margin:6px 0 0">
+                        University of Medellin, Colombia</p>
+                </div>
+                <div style="background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:1px 100%;background-position:0 0;padding:26px 24px 30px">
+                    <p style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:17px">
+                        Mario E. Valdés-Tresanco</p>
+                    <p style="font-size:13px;line-height:1.4;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-neutral-500);margin:8px 0 0">
+                        Author · maintainer</p>
+                    <p style="font-size:14px;line-height:1.5;color:var(--color-neutral-400);margin:6px 0 0">
+                        University of Calgary, Canada</p>
+                </div>
+                <div style="background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:1px 100%;background-position:0 0;padding:26px 24px 30px">
+                    <p style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:17px">
+                        Ernesto Moreno</p>
+                    <p style="font-size:13px;line-height:1.4;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-neutral-500);margin:8px 0 0">
+                        Author</p>
+                    <p style="font-size:14px;line-height:1.5;color:var(--color-neutral-400);margin:6px 0 0">
+                        University of Medellin, Colombia</p>
+                </div>
+                <div style="background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px);background-repeat:no-repeat;background-size:1px 100%;background-position:0 0;padding:26px 24px 30px">
+                    <p style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:17px">
+                        Pedro A. Valiente</p>
+                    <p style="font-size:13px;line-height:1.4;letter-spacing:0.05em;text-transform:uppercase;color:var(--color-neutral-500);margin:8px 0 0">
+                        Author</p>
+                    <p style="font-size:14px;line-height:1.5;color:var(--color-neutral-400);margin:6px 0 0">
+                        University of Toronto, Canada</p>
+                </div>
+            </div>
+            <div aria-hidden="true" style="height:72px"></div>
+        </div>
+    </section>
+
+    <footer style="max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between;padding-block:36px 56px;font-size:13px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 55%, transparent)">
+        <span>AMDockVS · MIT licensed · built on MolSuite</span>
+        <span style="display:flex;flex-wrap:wrap;gap:20px">
+      <a href="https://github.com/AMDockVS/AMDockVS" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://amdockvs.github.io/AMDockVS/" target="_blank" rel="noreferrer">Documentation</a>
+      <a href="https://github.com/AMDockVS/AMDockVS/issues" target="_blank" rel="noreferrer">Issues</a>
+    </span>
+    </footer>
+</div>
+</body>
+</html>
