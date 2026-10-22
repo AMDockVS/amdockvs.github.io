@@ -145,3 +145,27 @@ a { color: var(--color-accent); text-underline-offset: 3px; }
 @container tools (min-width: 1280px) {
   .tool-cards > article { flex-basis: 25%; }
 }
+
+/* Center each team row while preserving equal card widths. */
+.team-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.team-cards > div {
+  flex: 0 0 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 500px) {
+  .team-cards > div { flex-basis: 50%; }
+}
+@media (min-width: 750px) {
+  .team-cards > div { flex-basis: calc(100% / 3); }
+}
+@media (min-width: 1000px) {
+  .team-cards > div { flex-basis: 25%; }
+}
+@media (min-width: 1250px) {
+  .team-cards > div { flex-basis: 20%; }
+}
