@@ -279,109 +279,6 @@
         </div>
     </section>
 
-    <section id="platform" style="position:relative">
-        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
-            <div style="position:absolute;top:50%;left:25%;width:min(825px,75vw);transform:translate(-50%,-50%) rotate(28deg);aspect-ratio:660/780;opacity:.08">
-                <svg viewBox="870 50 660 780" preserveAspectRatio="xMidYMid meet"
-                     style="display:block;width:100%;height:100%;overflow:visible">
-                    <use href="#protein-halftone"></use>
-                </svg>
-            </div>
-            <div style="height:100%;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
-                <div style="position:relative;height:100%">
-                    <div aria-hidden="true"
-                         style="position:absolute;inset:0;mask-image:radial-gradient(ellipse 34% 26% at 50% 16%, transparent 0%, transparent 34%, rgba(0,0,0,0.45) 76%, #000 100%);-webkit-mask-image:radial-gradient(ellipse 34% 26% at 50% 16%, transparent 0%, transparent 34%, rgba(0,0,0,0.45) 76%, #000 100%)">
-                        <div aria-hidden="true"
-                             style="position:absolute;top:0;bottom:0;left:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
-                        <div aria-hidden="true"
-                             style="position:absolute;top:0;bottom:0;right:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <span aria-hidden="true"
-              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
-        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);padding-block:80px 84px">
-            <div style="text-align:center;max-width:60ch;margin:0 auto clamp(40px,4vw,56px)">
-                <p style="font-size:12.5px;line-height:1.4;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-300);margin:0">
-                    Platform</p>
-                <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(26px,2.6vw,38px);line-height:1.2;letter-spacing:-0.014em;margin:14px 0 0">
-                    Two flows, one project model</h2>
-                <p style="font-size:15.5px;line-height:1.65;color:color-mix(in srgb, var(--color-text) 72%, transparent);margin:16px auto 0;max-width:52ch">
-                    Both share the same docking layer, the same engines and the same results table — what changes is
-                    whether the library lives in the project or streams past it.</p>
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
-                <div style="position:relative;border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-neutral-800);background:color-mix(in srgb, var(--color-surface) 55%, transparent);padding:var(--space-8)">
-                    <p class="card-kicker" style="margin:0 0 10px">VS</p>
-                    <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:22px">
-                        The library is the project</h2>
-                    <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0;font-size:15.5px;line-height:1.7">
-                        Ligands are rows in the project database: browsable, filterable, one click from a pose.
-                        Standardise, compute descriptors, cluster for diversity, dock a scope and read the results
-                        in the same table you imported into. The right shape for a few hundred thousand molecules on
-                        the machine under your desk.</p>
-                    <p class="card-meta" style="margin:18px 0 0;color:var(--color-neutral-300)">Rows · full
-                        inventory · interactive</p>
-                </div>
-                <div style="position:relative;border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-neutral-800);background:color-mix(in srgb, var(--color-surface) 55%, transparent);padding:var(--space-8)">
-                    <p class="card-kicker" style="margin:0 0 10px">HTPVS</p>
-                    <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:22px">
-                        The library never enters the project</h2>
-                    <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0;font-size:15.5px;line-height:1.7">
-                        The import splits the library into uniform shards and materialises nothing. One shard is one
-                        unit of work, so a campaign fans out over cores, a lab network or an HPC allocation, and
-                        only promoted hits ever become rows — which is what keeps a ten-million-molecule run from
-                        filling the database it was meant to stay out of.</p>
-                    <p class="card-meta" style="margin:18px 0 0;color:var(--color-neutral-300)">Shards · hit gate ·
-                        resumable</p>
-                </div>
-            </div>
-            <p style="font-size:15.5px;line-height:1.7;color:var(--color-neutral-400);max-width:62ch;margin:clamp(36px,4vw,52px) auto 0;text-align:center;text-wrap:pretty">
-                The mode is read off the data, never declared: a project holds shards or it holds rows, and the
-                interface follows. Docking engines, pocket detection, preparation and analysis are one layer below
-                both — which is where other campaign types will plug in.</p>
-        </div>
-    </section>
-
-    <section style="position:relative">
-        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
-            <div style="height:100%;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
-                <div style="position:relative;height:100%">
-                    <div aria-hidden="true"
-                         style="position:absolute;inset:0;mask-image:radial-gradient(ellipse 38% 44% at 50% 50%, transparent 0%, transparent 36%, rgba(0,0,0,0.4) 74%, #000 100%);-webkit-mask-image:radial-gradient(ellipse 38% 44% at 50% 50%, transparent 0%, transparent 36%, rgba(0,0,0,0.4) 74%, #000 100%)">
-                        <div aria-hidden="true"
-                             style="position:absolute;top:0;bottom:0;left:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
-                        <div aria-hidden="true"
-                             style="position:absolute;top:0;bottom:0;right:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
-                        <div aria-hidden="true"
-                             style="position:absolute;top:0;bottom:0;left:25%;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
-                        <div aria-hidden="true"
-                             style="position:absolute;top:0;bottom:0;left:75%;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
-                    </div>
-                    <div aria-hidden="true"
-                         style="position:absolute;top:0;bottom:0;left:0;width:calc(25% - 1px);overflow:hidden;mask-image:linear-gradient(to left,#000 0%,#000 28%,transparent 100%)">
-                        <canvas data-canvas="mx4" data-kind="matrix"
-                                style="position:absolute;inset:0;display:block;width:100%;height:100%;opacity:.26;image-rendering:pixelated;mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%)"></canvas>
-                    </div>
-                    <div aria-hidden="true"
-                         style="position:absolute;top:0;bottom:0;right:0;width:calc(25% - 1px);overflow:hidden;mask-image:linear-gradient(to right,#000 0%,#000 28%,transparent 100%)">
-                        <canvas data-canvas="mx5" data-kind="matrix"
-                                style="position:absolute;inset:0;display:block;width:100%;height:100%;opacity:.26;image-rendering:pixelated;mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%)"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <span aria-hidden="true"
-              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
-        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);padding-block:112px;display:flex;justify-content:center">
-            <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(28px,3vw,42px);line-height:1.22;letter-spacing:-0.014em;margin:0;text-align:center;max-width:34ch">
-                <span style="display:block">One project, the whole campaign.</span>
-                <span style="display:block;color:var(--color-neutral-400)">No exports between steps, no second project to keep in sync.</span>
-            </h2>
-        </div>
-    </section>
-
     <section id="tools" style="position:relative;padding-top:clamp(64px,6vw,88px)">
         <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
             <div style="position:absolute;top:34%;left:80%;width:min(900px,90vw);transform:translate(-50%,-50%) rotate(-24deg);aspect-ratio:510/500;opacity:.06">
@@ -546,6 +443,109 @@
                     </div>
                 </article>
             </div>
+        </div>
+    </section>
+
+    <section id="platform" style="position:relative">
+        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
+            <div style="position:absolute;top:50%;left:25%;width:min(825px,75vw);transform:translate(-50%,-50%) rotate(28deg);aspect-ratio:660/780;opacity:.08">
+                <svg viewBox="870 50 660 780" preserveAspectRatio="xMidYMid meet"
+                     style="display:block;width:100%;height:100%;overflow:visible">
+                    <use href="#protein-halftone"></use>
+                </svg>
+            </div>
+            <div style="height:100%;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+                <div style="position:relative;height:100%">
+                    <div aria-hidden="true"
+                         style="position:absolute;inset:0;mask-image:radial-gradient(ellipse 34% 26% at 50% 16%, transparent 0%, transparent 34%, rgba(0,0,0,0.45) 76%, #000 100%);-webkit-mask-image:radial-gradient(ellipse 34% 26% at 50% 16%, transparent 0%, transparent 34%, rgba(0,0,0,0.45) 76%, #000 100%)">
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;right:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span aria-hidden="true"
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
+        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);padding-block:80px 84px">
+            <div style="text-align:center;max-width:60ch;margin:0 auto clamp(40px,4vw,56px)">
+                <p style="font-size:12.5px;line-height:1.4;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-300);margin:0">
+                    Platform</p>
+                <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(26px,2.6vw,38px);line-height:1.2;letter-spacing:-0.014em;margin:14px 0 0">
+                    Two flows, one project model</h2>
+                <p style="font-size:15.5px;line-height:1.65;color:color-mix(in srgb, var(--color-text) 72%, transparent);margin:16px auto 0;max-width:52ch">
+                    Both share the same docking layer, the same engines and the same results table — what changes is
+                    whether the library lives in the project or streams past it.</p>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+                <div style="position:relative;border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-neutral-800);background:color-mix(in srgb, var(--color-surface) 55%, transparent);padding:var(--space-8)">
+                    <p class="card-kicker" style="margin:0 0 10px">VS</p>
+                    <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:22px">
+                        The library is the project</h2>
+                    <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0;font-size:15.5px;line-height:1.7">
+                        Ligands are rows in the project database: browsable, filterable, one click from a pose.
+                        Standardise, compute descriptors, cluster for diversity, dock a scope and read the results
+                        in the same table you imported into. The right shape for a few hundred thousand molecules on
+                        the machine under your desk.</p>
+                    <p class="card-meta" style="margin:18px 0 0;color:var(--color-neutral-300)">Rows · full
+                        inventory · interactive</p>
+                </div>
+                <div style="position:relative;border-radius:12px;box-shadow:inset 0 0 0 1px var(--color-neutral-800);background:color-mix(in srgb, var(--color-surface) 55%, transparent);padding:var(--space-8)">
+                    <p class="card-kicker" style="margin:0 0 10px">HTPVS</p>
+                    <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);line-height:1.3;margin:0;font-size:22px">
+                        The library never enters the project</h2>
+                    <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 78%, transparent);margin:10px 0 0;font-size:15.5px;line-height:1.7">
+                        The import splits the library into uniform shards and materialises nothing. One shard is one
+                        unit of work, so a campaign fans out over cores, a lab network or an HPC allocation, and
+                        only promoted hits ever become rows — which is what keeps a ten-million-molecule run from
+                        filling the database it was meant to stay out of.</p>
+                    <p class="card-meta" style="margin:18px 0 0;color:var(--color-neutral-300)">Shards · hit gate ·
+                        resumable</p>
+                </div>
+            </div>
+            <p style="font-size:15.5px;line-height:1.7;color:var(--color-neutral-400);max-width:62ch;margin:clamp(36px,4vw,52px) auto 0;text-align:center;text-wrap:pretty">
+                The mode is read off the data, never declared: a project holds shards or it holds rows, and the
+                interface follows. Docking engines, pocket detection, preparation and analysis are one layer below
+                both — which is where other campaign types will plug in.</p>
+        </div>
+    </section>
+
+    <section style="position:relative">
+        <div aria-hidden="true" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden">
+            <div style="height:100%;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px)">
+                <div style="position:relative;height:100%">
+                    <div aria-hidden="true"
+                         style="position:absolute;inset:0;mask-image:radial-gradient(ellipse 38% 44% at 50% 50%, transparent 0%, transparent 36%, rgba(0,0,0,0.4) 74%, #000 100%);-webkit-mask-image:radial-gradient(ellipse 38% 44% at 50% 50%, transparent 0%, transparent 36%, rgba(0,0,0,0.4) 74%, #000 100%)">
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;right:0;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:25%;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                        <div aria-hidden="true"
+                             style="position:absolute;top:0;bottom:0;left:75%;width:1px;background-image:repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px)"></div>
+                    </div>
+                    <div aria-hidden="true"
+                         style="position:absolute;top:0;bottom:0;left:0;width:calc(25% - 1px);overflow:hidden;mask-image:linear-gradient(to left,#000 0%,#000 28%,transparent 100%)">
+                        <canvas data-canvas="mx4" data-kind="matrix"
+                                style="position:absolute;inset:0;display:block;width:100%;height:100%;opacity:.26;image-rendering:pixelated;mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%)"></canvas>
+                    </div>
+                    <div aria-hidden="true"
+                         style="position:absolute;top:0;bottom:0;right:0;width:calc(25% - 1px);overflow:hidden;mask-image:linear-gradient(to right,#000 0%,#000 28%,transparent 100%)">
+                        <canvas data-canvas="mx5" data-kind="matrix"
+                                style="position:absolute;inset:0;display:block;width:100%;height:100%;opacity:.26;image-rendering:pixelated;mask-image:linear-gradient(to bottom,transparent 0%,#000 18%,#000 82%,transparent 100%)"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span aria-hidden="true"
+              style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100vw;height:1px;background:var(--color-neutral-800);pointer-events:none"></span>
+        <div style="position:relative;z-index:1;max-width:1544px;margin:0 auto;padding-inline:clamp(20px,4vw,64px);padding-block:112px;display:flex;justify-content:center">
+            <h2 style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:clamp(28px,3vw,42px);line-height:1.22;letter-spacing:-0.014em;margin:0;text-align:center;max-width:34ch">
+                <span style="display:block">One project, the whole campaign.</span>
+                <span style="display:block;color:var(--color-neutral-400)">No exports between steps, no second project to keep in sync.</span>
+            </h2>
         </div>
     </section>
 
