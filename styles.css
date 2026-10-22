@@ -113,3 +113,35 @@ a { color: var(--color-accent); text-underline-offset: 3px; }
 .nav-brand img { display: block; flex: none; color-scheme: dark; }
 .nav a { color: inherit; text-decoration: none; font-size: 14px; }
 .nav a:hover, .nav a[aria-current='page'] { color: var(--color-accent); }
+
+/* Keep incomplete tool rows centered, with the same card width as full rows. */
+.tool-cards {
+  container: tools / inline-size;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tool-cards > article {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+/* Align with the next card's left edge to keep shared dividers one pixel wide. */
+.tool-cards > article::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -1px;
+  width: 1px;
+  background-image: repeating-linear-gradient(to bottom, var(--color-neutral-700) 0 1px, transparent 1px 4px);
+  pointer-events: none;
+}
+@container tools (min-width: 640px) {
+  .tool-cards > article { flex-basis: 50%; }
+}
+@container tools (min-width: 960px) {
+  .tool-cards > article { flex-basis: calc(100% / 3); }
+}
+@container tools (min-width: 1280px) {
+  .tool-cards > article { flex-basis: 25%; }
+}
