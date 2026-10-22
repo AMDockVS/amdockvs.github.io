@@ -543,8 +543,10 @@ class CanvasAnimations {
       const off = q.t === "pi" ? 0.95 : q.t === "hy" ? 0.35 : 0.7;
       ctx.fillText(q.r, ex + dx * u * off + (q.t === "hy" ? dx * u * 0.3 : 0), ey + dy * u * off + 3);
     });
-    ctx.globalAlpha = 1; ctx.font = mono(11); ctx.textAlign = "left";
-    ctx.fillStyle = C.MUT; ctx.fillText("2D INTERACTIONS \u00b7 COX-1", 14, 20);
+    ctx.globalAlpha = 1; ctx.font = mono(11); ctx.textAlign = "right";
+    ctx.fillStyle = C.MUT; ctx.fillText("2D INTERACTIONS", W - 14, 20);
+    ctx.textAlign = "left";
+    ctx.fillText("COX-1", 14, 20);
     const cq = IX[s.k]; ctx.fillStyle = C.LIT; ctx.fillText(cq.r + "  " + cq.v, 14, H - 8);
   }
 
