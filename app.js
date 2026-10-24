@@ -92,7 +92,20 @@ class CanvasAnimations {
   seed(rec) {
     const k = rec.kind;
     if (k === "hero") return { t: 0, parts: [], spawn: 0, kept: 0, culled: 0, stack: [], tasks: [], done: 0, nodes: Array.from({ length: 12 }, () => ({ busy: 0, done: 0 })) };
-    if (k === "matrix") return { t: 0 };
+    if (k === "matrix") {
+      const cols = Math.ceil(rec.w / 4) + 1, rows = Math.ceil(rec.h / 4) + 1;
+      // fit() clears the simulation on resize, rebuilding these fixed dot values.
+      const dots = new Float64Array(cols * rows * 3);
+      for (let i = 0, n = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++, n += 3) {
+          const h = ((i * 73856093) ^ (j * 19349663) ^ ((i * j + i + j) * 83492791)) >>> 0;
+          dots[n] = 0.3 + ((h % 997) / 997) * 0.2;
+          dots[n + 1] = ((h >>> 10) % 991) / 991;
+          dots[n + 2] = 9 + (((h >>> 19) % 983) / 983) * 15;
+        }
+      }
+      return { t: 0, cols, rows, dots, base: null };
+    }
 
     if (k === "prep" || k === "recep") return { t: 0, st: 0, ph: 0, rot: 0 };
     if (k === "site") return { t: 0, sel: 0, next: 0, sites: [{ a: 1.0, r: 0.52, score: 0.86, c: [12.4, -3.1, 8.7] }, { a: 2.6, r: 0.66, score: 0.71, c: [-4.8, 10.2, 21.3] }, { a: 4.3, r: 0.44, score: 0.58, c: [27.6, 1.9, -6.4] }] };
@@ -203,16 +216,30 @@ class CanvasAnimations {
     const mono = (px) => px + "px ui-monospace, Menlo, monospace";
     ctx.font = mono(11);
     if (k === "matrix") {
-      const step = 4, cols = Math.ceil(W / step) + 1, rows = Math.ceil(H / step) + 1;
-      for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          const h = ((i * 73856093) ^ (j * 19349663) ^ ((i * j + i + j) * 83492791)) >>> 0;
-          const r = (h % 997) / 997;
-          const ph = ((h >>> 10) % 991) / 991;
-          const per = 9 + (((h >>> 19) % 983) / 983) * 15;
-          const u = (s.t / per + ph) % 1;
-          const lit = u < 0.3 ? Math.sin((u / 0.3) * Math.PI) : 0;
-          const a = 0.3 + r * 0.2 + lit * 0.5;
+      const step = 4, dots = s.dots;
+      if (!s.base) {
+        const base = document.createElement("canvas");
+        base.width = rec.el.width; base.height = rec.el.height;
+        const bg = base.getContext("2d");
+        bg.fillStyle = C.MUT;
+        for (let i = 0, n = 0; i < s.cols; i++) {
+          for (let j = 0; j < s.rows; j++, n += 3) {
+            bg.globalAlpha = dots[n];
+            bg.fillRect(i * step, j * step, 1, 1);
+          }
+        }
+        s.base = base;
+      }
+      // Most dots are at their fixed base brightness; only pulses need repainting.
+      ctx.drawImage(s.base, 0, 0);
+      for (let i = 0, n = 0; i < s.cols; i++) {
+        for (let j = 0; j < s.rows; j++, n += 3) {
+          const u = (s.t / dots[n + 2] + dots[n + 1]) % 1;
+          if (u >= 0.3) continue;
+          const lit = Math.sin((u / 0.3) * Math.PI);
+          const a = dots[n] + lit * 0.5;
+          // Replace the base pixel rather than blending, preserving its exact color.
+          ctx.clearRect(i * step, j * step, 1, 1);
           ctx.globalAlpha = a;
           ctx.fillStyle = lit > 0.6 ? C.INK : C.MUT;
           ctx.fillRect(i * step, j * step, 1, 1);
