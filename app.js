@@ -98,7 +98,7 @@ class CanvasAnimations {
     if (k === "site") return { t: 0, sel: 0, next: 0, sites: [{ a: 1.0, r: 0.52, score: 0.86, c: [12.4, -3.1, 8.7] }, { a: 2.6, r: 0.66, score: 0.71, c: [-4.8, 10.2, 21.3] }, { a: 4.3, r: 0.44, score: 0.58, c: [27.6, 1.9, -6.4] }] };
     if (k === "engines") return { t: 0, lanes: [{ n: "VINA 1.2.7", tag: "CLASSICAL", p: 0, v: 0.5 }, { n: "QUICKVINA2", tag: "CLASSICAL", p: 0.3, v: 0.78 }, { n: "GNINA", tag: "AI", p: 0.1, v: 0.33 }] };
     if (k === "cluster") return { t: 0, p: 0, cents: [0, 1, 2].map(() => ({ x: 0.2 + rnd(0.6), y: 0.2 + rnd(0.6) })), pts: Array.from({ length: 80 }, () => ({ x: rnd(1), y: rnd(1), c: Math.floor(rnd(3)), ox: (Math.random() - 0.5) * 0.16, oy: (Math.random() - 0.5) * 0.16 })) };
-    if (k === "qsar") return { t: 0, n: 0, pts: Array.from({ length: 46 }, () => { const x = 0.06 + rnd(0.88); return { x, y: Math.max(0.04, Math.min(0.96, x + (Math.random() - 0.5) * 0.22)) }; }) };
+    if (k === "qsar") return { t: 0, n: 0, hold: 0, alpha: 1, pts: Array.from({ length: 46 }, () => { const x = 0.06 + rnd(0.88); return { x, y: Math.max(0.04, Math.min(0.96, x + (Math.random() - 0.5) * 0.22)) }; }) };
     if (k === "dock") return { t: 0, i: 0, ph: 0 };
     if (k === "vs") return { t: 0, cycle: 0, rows: Array.from({ length: 7 }, (_, i) => ({ y: i / 6, ty: i / 6, score: -(6 + rnd(5)) })) };
     if (k === "htp") return { t: 0, spawn: 0, done: 0, hold: 0, cells: Array.from({ length: 24 }, () => ({ st: 0, t: 0 })) };
@@ -127,7 +127,15 @@ class CanvasAnimations {
       if (s.p > 2.4) { s.p = 0; s.cents = s.cents.map(() => ({ x: 0.2 + rnd(0.6), y: 0.2 + rnd(0.6) })); for (const p of s.pts) { p.x = rnd(1); p.y = rnd(1); p.c = Math.floor(rnd(3)); } }
       return;
     }
-    if (k === "qsar") { s.n = Math.min(s.pts.length, s.n + dt * 9); return; }
+    if (k === "qsar") {
+      s.n = Math.min(s.pts.length, s.n + dt * 9);
+      if (s.n === s.pts.length) {
+        s.hold += dt;
+        s.alpha = Math.max(0, 1 - Math.max(0, s.hold - 1.5) / 0.6);
+        if (s.hold >= 2.1) { s.n = 0; s.hold = 0; s.alpha = 1; }
+      }
+      return;
+    }
     if (k === "dock") { s.ph += dt; if (s.ph > (s.i === 4 ? 3.2 : 1.9)) { s.ph = 0; s.i = (s.i + 1) % 5; } return; }
     if (k === "vs") {
       s.cycle -= dt;
@@ -248,18 +256,19 @@ class CanvasAnimations {
       const n = Math.floor(s.n);
       const prog = n / s.pts.length;
       ctx.setLineDash([4, 4]);
-      ctx.strokeStyle = C.MID; ctx.globalAlpha = 0.8;
+      ctx.strokeStyle = C.MID; ctx.globalAlpha = 0.8 * s.alpha;
       ctx.beginPath(); ctx.moveTo(x0, y1); ctx.lineTo(x0 + (x1 - x0) * prog, y1 - (y1 - y0) * prog); ctx.stroke();
       ctx.setLineDash([]); ctx.globalAlpha = 1;
       s.pts.slice(0, n).forEach((p) => {
-        ctx.fillStyle = C.ACC; ctx.globalAlpha = 0.85;
+        ctx.fillStyle = C.ACC; ctx.globalAlpha = 0.85 * s.alpha;
         ctx.beginPath(); ctx.arc(x0 + (x1 - x0) * p.x, y1 - (y1 - y0) * p.y, 2.2, 0, 6.2832); ctx.fill();
       });
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha = s.alpha;
       ctx.fillStyle = C.LIT; ctx.textAlign = "left";
       ctx.fillText("R\u00b2 " + (0.61 + prog * 0.26).toFixed(2), x0 + 6, y0 + 12);
       ctx.fillStyle = C.MUT;
       ctx.fillText("PREDICTED vs EXPERIMENTAL", x0 + 6, y0 + 28);
+      ctx.globalAlpha = 1;
       return;
     }
 
