@@ -120,6 +120,7 @@ a { color: var(--color-accent); text-underline-offset: 3px; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  row-gap: 48px;
 }
 .tool-cards > article {
   flex: 0 0 100%;
