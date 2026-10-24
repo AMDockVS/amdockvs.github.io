@@ -601,17 +601,22 @@ class CanvasAnimations {
       ctx.fillText("HITS  " + s.kept.toLocaleString(), W - pad, y0 - 10);
   }
 
-  // Aspirin: 2D depiction coords (x,y) + approximate 3D conformer (x3,y3,z3) and explicit H.
+  // Aspirin: schematic 2D depiction + PubChem CID 2244 computed 3D conformer.
+  // Source: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2244/record/JSON?record_type=3d
+  // Conformer 000008C400000001; retrieved 2026-10-24. All 3D coordinates are
+  // rigidly aligned and uniformly divided by 1.3949111866 angstrom (mean ring
+  // C-C length), preserving bond-length ratios while matching the 2D panel size.
   static asp() {
     if (CanvasAnimations._asp) return CanvasAnimations._asp;
     const P = [[0, 1], [0.866, 0.5], [0.866, -0.5], [0, -1], [-0.866, -0.5], [-0.866, 0.5], [0, 2], [-0.866, 2.5], [0.866, 2.5], [1.732, 1], [2.598, 0.5], [2.598, -0.5], [3.464, 1]];
     const EL = ["C", "C", "C", "C", "C", "C", "C", "O", "O", "O", "C", "O", "C"];
-    const Z = [0, 0, 0, 0, 0, 0, 0, 0.35, -0.35, 0.1, 0, 0, 0];
-    const D3 = { 10: [2.35, 0.75, 1.05], 11: [2.15, -0.05, 1.85], 12: [3.4, 1.3, 1.35] };
+    // PubChem heavy-atom IDs: 6,5,7,9,10,8,11,3,2,1,12,4,13.
+    const D3 = [[-0.00001, 1.00004, 0], [0.86605, 0.50002, 0], [0.86594, -0.50002, 0.00003], [-0.00004, -1.00004, -0.00004], [-0.86595, -0.50002, 0], [-0.86601, 0.50002, 0], [-0.01603, 2.04394, -0.00097], [0.59027, 2.57377, -0.35568], [-0.80654, 2.39613, 0.45123], [1.71969, 0.97541, -0.00109], [2.07901, 1.17507, 0.91747], [1.6946, 0.96205, 1.6768], [3.01603, 1.69695, 0.83966]];
     const B = [[0, 1, 1], [1, 2, 2], [2, 3, 1], [3, 4, 2], [4, 5, 1], [5, 0, 2], [0, 6, 1], [6, 7, 2], [6, 8, 1], [1, 9, 1], [9, 10, 1], [10, 11, 2], [10, 12, 1]];
     const cx = 1.3, cy = 0.75;
-    const A = P.map(([x, y], i) => { const d = D3[i] || [x, y, Z[i]]; return { x: x - cx, y: -(y - cy), x3: d[0] - cx, y3: -(d[1] - cy), z3: d[2], el: EL[i] }; });
-    const H = [[2, 1.82, -1.05, 0], [3, 0, -2.1, 0], [4, -1.82, -1.05, 0], [5, -1.82, 1.05, 0], [8, 0.8, 3.45, -0.5], [12, 4.2, 0.7, 1.5], [12, 3.6, 2.1, 0.7], [12, 3.3, 1.8, 2.3]].map(([p, x, y, z]) => ({ p, x3: x - cx, y3: -(y - cy), z3: z }));
+    const A = P.map(([x, y], i) => { const d = D3[i]; return { x: x - cx, y: -(y - cy), x3: d[0] - cx, y3: -(d[1] - cy), z3: d[2], el: EL[i] }; });
+    // PubChem hydrogen IDs: 14,16,17,15,21,18,19,20; acidic H stays at index 4.
+    const H = [[2, 1.53764, -0.89456, -0.00085], [3, -0.00016, -1.77864, -0.00079], [4, -1.54014, -0.88954, -0.00236], [5, -1.5526, 0.86818, -0.00984], [8, -0.81669, 3.09933, 0.45016], [12, 3.53627, 1.25137, 0.45961], [12, 3.29137, 1.84593, 1.55856], [12, 2.9093, 2.37716, 0.466]].map(([p, x, y, z]) => ({ p, x3: x - cx, y3: -(y - cy), z3: z }));
     return (CanvasAnimations._asp = { A, B, H, lbl: { 7: "O", 8: "OH", 9: "O", 11: "O" }, rc: { x: -cx, y: cy } });
   }
 
