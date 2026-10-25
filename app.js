@@ -45,17 +45,22 @@ class CanvasAnimations {
     for (const r of this.cv.values()) {
       if (!r.vis || !r.w) continue;
       if (!live && r.settled) continue;
-      r.acc = (r.acc || 0) + dt;
-      const frame = r.kind === "matrix" ? 0.2 : r.kind === "hero" ? 0.02 : 0.045;
-      if (r.acc < frame) continue;
+      if (live) {
+        r.settled = false;
+        r.still = null;
+        r.acc = (r.acc || 0) + dt;
+        const frame = r.kind === "matrix" ? 0.2 : r.kind === "hero" ? 0.02 : 0.045;
+        if (r.acc < frame) continue;
+      }
       try {
-        this.step(r, r.acc);
-        this.paint(r);
+        if (live) this.step(r, r.acc);
+        else if (!r.still) r.still = this.still(r);
+        this.paint(r, live ? r.sim : r.still);
+        r.settled = !live;
       } catch (err) {
         if (!this.errLogged) { this.errLogged = true; console.error("[canvas]", r.kind, err); }
       }
-      r.acc = 0;
-      if (!live) r.settled = true;
+      if (live) r.acc = 0;
     }
   }
 
@@ -75,7 +80,7 @@ class CanvasAnimations {
     rec.dpr = rec.kind === "matrix" ? 1 : this.dpr;
     rec.el.width = Math.round(r.width * rec.dpr);
     rec.el.height = Math.round(r.height * rec.dpr);
-    rec.w = r.width; rec.h = r.height; rec.sim = null; rec.settled = false;
+    rec.w = r.width; rec.h = r.height; rec.sim = null; rec.still = null; rec.settled = false;
   }
 
   colors(el) {
@@ -123,6 +128,52 @@ class CanvasAnimations {
     if (k === "vs") return { t: 0, cycle: 0, rows: Array.from({ length: 7 }, (_, i) => ({ y: i / 6, ty: i / 6, score: -(6 + rnd(5)) })) };
     if (k === "htp") return { t: 0, spawn: 0, done: 0, hold: 0, cells: Array.from({ length: 24 }, () => ({ st: 0, t: 0 })) };
     return { t: 0, k: 0, next: 1.5 };
+  }
+
+  // Composed snapshots are separate from the live simulation and never advance it.
+  still(rec) {
+    const k = rec.kind;
+    if (k === "matrix") return { ...(rec.sim || this.seed(rec)), t: 8.4 };
+    if (k === "cluster") return {
+      t: 0, p: 1, cents: [{ x: 0.24, y: 0.35 }, { x: 0.75, y: 0.3 }, { x: 0.53, y: 0.73 }],
+      pts: Array.from({ length: 80 }, (_, i) => {
+        const a = i * 2.4, r = 0.025 + 0.06 * Math.sqrt((i % 27) / 27);
+        return { x: 0, y: 0, c: i % 3, ox: Math.cos(a) * r, oy: Math.sin(a) * r * 1.4 };
+      })
+    };
+    if (k === "qsar") return {
+      t: 0, n: 46, hold: 0, alpha: 1,
+      pts: Array.from({ length: 46 }, (_, i) => {
+        const x = 0.06 + ((i + 0.5) / 46) * 0.88;
+        return { x, y: Math.max(0.04, Math.min(0.96, x + Math.sin(i * 2.4) * 0.1)) };
+      })
+    };
+    if (k === "vs") return {
+      t: 0, cycle: 2.8,
+      rows: [-10.7, -9.8, -9.2, -8.4, -7.7, -7.1, -6.4].map((score, rank, rows) => ({ score, rank, y: rank / (rows.length - 1), ty: rank / (rows.length - 1) }))
+    };
+    const s = this.seed(rec);
+    if (k === "hero") {
+      const edges = [0, 0.18, 0.36, 0.54, 0.72, 0.88, 1], counts = [54, 32, 22, 15, 9, 5];
+      s.parts = counts.flatMap((count, stage) => Array.from({ length: count }, (_, i) => ({
+        x: edges[stage] + ((i + 0.5) / count) * (edges[stage + 1] - edges[stage]),
+        y: 0.5 + Math.sin(i * 2.4 + stage * 0.7) * (0.44 / (1 + stage * 0.6)),
+        v: 0.18, stage, dead: 0, drift: 0
+      })));
+      s.kept = 24; s.culled = 839; s.done = 72;
+      s.stack = Array.from({ length: 18 }, (_, i) => ({ y: 0.4 + i * 0.01, age: i * 0.1 }));
+      s.nodes.forEach((node, i) => { node.busy = i % 3 === 2 ? 0 : 1; node.done = 6; });
+      s.tasks = s.nodes.flatMap((node, i) => node.busy ? [{ gx: edges[1 + i % 5], gy: 0.5, g: i % 5, node: i, p: 0.25 + (i % 4) * 0.16, dir: 1 }] : []);
+    } else if (k === "prep") Object.assign(s, { t: 8, st: 5, ph: 1.8, rot: -0.1, rx: -0.6 });
+    else if (k === "recep") Object.assign(s, { t: 8, st: 3, ph: 2.4, rot: 0.65 });
+    else if (k === "site") Object.assign(s, { t: 1.4, sel: 0, next: 0.8 });
+    else if (k === "engines") s.lanes.forEach((lane, i) => { lane.p = [0.88, 0.7, 0.94][i]; });
+    else if (k === "dock") Object.assign(s, { t: 8, i: 4, ph: 1.8 });
+    else if (k === "htp") {
+      s.done = 16;
+      s.cells.forEach((cell, i) => { cell.st = i < 16 ? 2 : i < 20 ? 1 : 0; });
+    } else Object.assign(s, { t: 2, k: 0 });
+    return s;
   }
 
   step(rec, dt) {
@@ -214,9 +265,9 @@ class CanvasAnimations {
       s.parts = s.parts.filter((p) => !p.gone && (!p.dead || (p.dead < 1.4 && p.y < 1.3)));
   }
 
-  paint(rec) {
+  paint(rec, sim = rec.sim) {
     const ctx = rec.el.getContext("2d");
-    const W = rec.w, H = rec.h, s = rec.sim, C = this.colors(rec.el), k = rec.kind;
+    const W = rec.w, H = rec.h, s = sim, C = this.colors(rec.el), k = rec.kind;
     const d = rec.dpr || this.dpr;
     ctx.setTransform(d, 0, 0, d, 0, 0);
     ctx.clearRect(0, 0, W, H);
@@ -479,7 +530,7 @@ class CanvasAnimations {
       ctx.font = mono(10); ctx.fillStyle = C.GHO; ctx.textAlign = "left"; ctx.fillText(SM, pad - 4, H - 8);
       if (st === 1) { this.draw2D(ctx, C, { x: cx, y: cy, s: sc, prog: ez(p * 1.25) }); return; }
       const m = st === 2 ? ez(p) : 1;
-      const o = { x: cx, y: cy, s: sc, t: s.t, m, ry: s.rot + 0.5 * m, rx: 0.45 * m, hA: m };
+      const o = { x: cx, y: cy, s: sc, t: s.t, m, ry: s.rot + 0.5 * m, rx: (s.rx ?? 0.45) * m, hA: m };
       let right = st === 2 ? "CONFORMER 1/10" : "";
       if (st === 3) { o.noise = 0.28 * Math.min(1, p * 10) * Math.exp(-p * 4); right = "E " + (12.6 + 35.4 * Math.exp(-p * 4.5)).toFixed(1) + " kcal/mol"; }
       if (st >= 4) { o.drop = 4; o.dropP = st === 4 ? ez(p * 1.6) : 1; }
