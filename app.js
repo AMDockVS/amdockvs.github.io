@@ -14,26 +14,33 @@ class CanvasAnimations {
   }
 
   ensureLoop() {
-    if (this.loop) { if (!this.raf) this.raf = requestAnimationFrame(this.loop); return; }
+    if (this.loop) { if (!document.hidden && !this.raf) this.raf = requestAnimationFrame(this.loop); return; }
     if (this.reduce === undefined) this.reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.last = 0;
     this.loop = (ts) => {
+      this.raf = 0;
+      if (document.hidden) { this.last = 0; return; }
       this.raf = requestAnimationFrame(this.loop);
       const dt = this.last ? Math.min((ts - this.last) / 1000, 0.05) : 0.016;
       this.last = ts;
       this.tick(dt);
     };
-    // rAF is suspended while the document is hidden (preview panes, background tabs);
-    // this keeps a first frame on screen and the sims advancing there.
-    if (!this.iv) this.iv = setInterval(() => { if (document.hidden) this.tick(0.12); }, 120);
     if (!this.kick) {
-      this.kick = () => { this.last = 0; if (!this.raf) this.raf = requestAnimationFrame(this.loop); };
+      this.kick = () => {
+        this.last = 0;
+        if (document.hidden) {
+          if (this.raf) cancelAnimationFrame(this.raf);
+          this.raf = 0;
+        } else if (!this.raf) this.raf = requestAnimationFrame(this.loop);
+      };
       document.addEventListener("visibilitychange", this.kick);
     }
+    if (!document.hidden) this.raf = requestAnimationFrame(this.loop);
     setTimeout(() => { this.tick(0.25); this.tick(0.25); }, 0);
   }
 
   tick(dt) {
+    if (document.hidden) return;
     const live = this.state.motion && !this.reduce;
     for (const r of this.cv.values()) {
       if (!r.vis || !r.w) continue;
