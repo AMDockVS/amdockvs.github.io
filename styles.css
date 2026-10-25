@@ -170,3 +170,25 @@ a { color: var(--color-accent); text-underline-offset: 3px; }
 @media (min-width: 1250px) {
   .team-cards > div { flex-basis: 20%; }
 }
+
+#team { scroll-margin-top: 96px; }
+.team-profiles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 12px;
+}
+.profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.profile-link svg { flex: none; }
+.profile-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
